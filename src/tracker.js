@@ -25,7 +25,7 @@ export function getPeers (torrent, callback) {
             callback(announceResp.peers);
         }
     });
-};
+}
 function udpSend(socket,message,rawUrl,callback=()=>{})
 {
     const url=URLParser.parse(rawUrl)
@@ -34,7 +34,10 @@ function udpSend(socket,message,rawUrl,callback=()=>{})
 }
 
 function respType(resp) {
-    // ...
+    const action=resp.readUint32BE(0);
+    if(action===0) return 'connect'
+    if(action===1) return 'announce'
+
 }
 //Connection request mora vaka da izgleda
 // Offset  Size            Name            Value
@@ -155,3 +158,4 @@ function parseAnnounceResp(resp) {
 
     }
 }
+
