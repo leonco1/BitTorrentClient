@@ -147,5 +147,4 @@ export  function buildPort(payload)
     buf.writeUInt8(9,4)
     buf.writeInt16BE(payload,5)
     return buf
-
 }
