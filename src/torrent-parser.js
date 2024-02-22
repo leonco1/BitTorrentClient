@@ -18,6 +18,7 @@ const info=bencode.encode(torrent.info)
 
 export function size(torrent)
 {
-    const size=torrent.info.files?torrent.info.files.map(file=>file.length).reduce((a,b)=>a+b):torrent.info.length
+    const size=torrent.info.files?torrent.
+    info.files.map(file=>file.length).reduce((a,b)=>a+b):torrent.info.length
     return bignum.toBufferBE(size,8)
 }

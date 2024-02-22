@@ -1,6 +1,6 @@
 import * as net from "net"
 import {Buffer} from "buffer";
-import * as tracker from '/tracker.js'
+import * as tracker from './tracker.js'
 
 export  function CreateTCPConnection(torrent)
 {

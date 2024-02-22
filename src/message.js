@@ -1,6 +1,6 @@
 import {Buffer} from "buffer";
-import  * as torrentParser from "src/torrent-parser.js"
-import * as util from "/util.js";
+import  * as torrentParser from "./torrent-parser.js"
+import * as util from "./util.js";
 
 
 
