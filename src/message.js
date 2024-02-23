@@ -16,7 +16,7 @@ export function BuildHandshake(torrent)
     //pstrlen
     buf.writeUInt8(19,0)
     //pstr
-    buf.write("BittorrentProtocol",1)
+    buf.write("BitTorrent protocol",1)
     //reserved
     buf.writeUInt32BE(0,20)
     buf.writeUInt32BE(0,24)
