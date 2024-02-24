@@ -10,6 +10,7 @@ export  function CreateTCPConnection(torrent)
         peers.forEach(download)
     })
 }
+
 function download(peer) {
 
     const socket=new net.Socket
@@ -25,7 +26,26 @@ function msgHandler(msg,socket)
     {
         socket.write(message.buildInterested());
     }
+    else
+    {
+        const m=message.parse(msg)
+        if(m.id===0) chokeHandler();
+        if(m.id===1)unchokeHandler();
+        if(m.id===4)haveHandler(m.payload)
+        if(m.id===5)bitfieldHandler(m.payload)
+        if(m.id===7)pieceHandler(m.payload)
+    }
 }
+function chokeHandler() {  }
+
+function unchokeHandler() {  }
+
+function haveHandler(payload) {  }
+
+function bitfieldHandler(payload) {  }
+
+function pieceHandler(payload) {  }
+
 
 function onWholeMsg(socket,callback)
 {
@@ -33,7 +53,7 @@ function onWholeMsg(socket,callback)
     let handshake=true
     socket.on('data',recvBuf=>{
 
-        const msgLen=()=>handshake?savedBuf.readUInt8(0)+49:savedBuf.readInt32BE(0)+4
+        const msgLen=()=>handshake? savedBuf.readUInt8(0)+49 :savedBuf.readInt32BE(0)+4
         savedBuf = Buffer.concat([savedBuf, recvBuf]);
 
         while (savedBuf.length >= 4 && savedBuf.length >= msgLen()) {
