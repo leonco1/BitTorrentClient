@@ -1,6 +1,7 @@
 import * as net from "net"
 import {Buffer} from "buffer";
 import * as tracker from './tracker.js'
+import * as message from './message.js'
 
 export  function CreateTCPConnection(torrent)
 {
@@ -16,6 +17,14 @@ function download(peer) {
     socket.connect(peer.port, peer.ip, function () {
         socket.write(Buffer.from('hello world'))
     })
+    onWholeMsg(socket,msg=>msgHandler(msg,socket))
+}
+function msgHandler(msg,socket)
+{
+    if(isHandshake(msg))
+    {
+        socket.write(message.buildInterested());
+    }
 }
 
 function onWholeMsg(socket,callback)
@@ -33,4 +42,9 @@ function onWholeMsg(socket,callback)
             handshake = false;
             }
     })
+}
+function isHandshake(msg)
+{
+    return msg.length===msg.readUInt8(0)+49&&
+        msg.toString('utf8',1)==="BitTorrent protocol"
 }
