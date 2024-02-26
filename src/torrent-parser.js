@@ -14,7 +14,7 @@ export function pieceLen(torrent,pieceIndex)
     const totalLength = BigInt('0x' + Buffer.from(this.size(torrent)).toString('hex'));
     const piecesLength = BigInt(torrent.info['piece length']); // Convert to BigInt
     const lastPieceLength = totalLength % piecesLength;
-    const lastPieceIndex = Math.floor(totalLength / piecesLength);
+    const lastPieceIndex = BigInt(Math.floor(Number(totalLength) / Number(piecesLength)));
 
     return lastPieceIndex === pieceIndex ? lastPieceLength : piecesLength;
 
@@ -22,7 +22,7 @@ export function pieceLen(torrent,pieceIndex)
 export function blocksPerPiece(torrent,pieceIndex)
 {
     const pieceLength = this.pieceLen(torrent, pieceIndex);
-    return Math.ceil(pieceLength / this.BLOCK_LEN);
+    return Math.ceil(Number(pieceLength) / this.BLOCK_LEN);
 }
 export function blockLen(torrent,pieceIndex,blockIndex)
 {
