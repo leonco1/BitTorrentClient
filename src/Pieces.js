@@ -1,27 +1,37 @@
+import * as tp from "./torrent-parser.js";
+
 export class Pieces
 {
-    constructor(size) {
-        this.requested=new Array(size).fill(false)
-        this.received=new Array(size).fill(false)
-    }
-    addRequested(pieceIndex) {
-        this.requested[pieceIndex] = true;
-    }
+    constructor(torrent) {
+        function buildPiecesArray() {
+            const nPieces = torrent.info.pieces.length / 20;
+            const arr = new Array(nPieces).fill(null);
+            return arr.map((_, i) => new Array(tp.blocksPerPiece(torrent, i)).fill(false));
 
-    addReceived(pieceIndex) {
-        this.received[pieceIndex] = true;
-    }
-
-    needed(pieceIndex) {
-        if (this.requested.every(i => i === true)) {
-            // use slice method to return a copy of an array
-            this.requested = this.received.slice();
         }
-        return !this.requested[pieceIndex];
+
+        this._requested = buildPiecesArray();
+        this._received = buildPiecesArray();
+    }
+        addRequested(pieceBlock) {
+            const blockIndex = pieceBlock.begin / tp.BLOCK_LEN;
+            this._requested[pieceBlock.index][blockIndex] = true;    }
+
+    addReceived(pieceBlock) {
+        const blockIndex = pieceBlock.begin / tp.BLOCK_LEN;
+        this._received[pieceBlock.index][blockIndex] = true;
+    }
+
+    needed(pieceBlock) {
+        if (this.isDone()) {
+            this._requested = this._received.map(blocks => blocks.slice());
+        }
+        const blockIndex = pieceBlock.begin / tp.BLOCK_LEN;
+        return !this._requested[pieceBlock.index][blockIndex];
     }
 
     isDone() {
-        return this.received.every(i => i === true);
+        return this._received.every(blocks => blocks.every(i => i));
     }
 
 }
