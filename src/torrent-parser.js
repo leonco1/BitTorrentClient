@@ -3,7 +3,7 @@
 import * as fs from "fs"
 import bencode  from "bencode";
 import * as crypto from "crypto";
-import  * as bignum from 'bignum'
+import  * as bignum from 'bigint-buffer'
 export  const BLOCK_LEN=Math.pow(2,14);
 export  function  open(filepath)
 {
