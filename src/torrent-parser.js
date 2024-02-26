@@ -12,9 +12,10 @@ return bencode.decode(fs.readFileSync(filepath));
 export function pieceLen(torrent,pieceIndex)
 {
     const totalLength = BigInt('0x' + Buffer.from(this.size(torrent)).toString('hex'));
-    const piecesLength=torrent.info['piece length']
-    const lastPieceLength=totalLength%piecesLength
-    const lastPieceIndex=Math.floor(totalLength/piecesLength)
+    const piecesLength = BigInt(torrent.info['piece length']); // Convert to BigInt
+    const lastPieceLength = totalLength % piecesLength;
+    const lastPieceIndex = Math.floor(totalLength / piecesLength);
+
     return lastPieceIndex === pieceIndex ? lastPieceLength : piecesLength;
 
 }
